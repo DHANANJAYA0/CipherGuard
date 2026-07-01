@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CipherGuard — Anti-Keylogger & Clipboard Protection</title>
+    <meta name="description" content="CipherGuard is a real-time desktop security suite that protects your keystrokes from keyloggers, guards your clipboard from hijacking, and stores sensitive data in an AES-256 encrypted vault.">
+    <meta name="keywords" content="CipherGuard, anti-keylogger, clipboard protection, cybersecurity, keystroke protection, AES encryption, vault, desktop security">
+    <meta name="author" content="CipherGuard Team">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="CipherGuard — Anti-Keylogger & Clipboard Protection">
+    <meta property="og:description" content="Real-time desktop security suite. Scramble keystrokes, guard clipboard, encrypt your vault.">
+    <meta property="og:type" content="website">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+</head>
+<body>
+    <!-- ═══════ PARTICLE CANVAS ═══════ -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- ═══════ NAVIGATION ═══════ -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <span class="logo-icon">🛡️</span>
+                <span class="logo-text">Cipher<span class="logo-highlight">Guard</span></span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#how-it-works" class="nav-link">How It Works</a>
+                <a href="#modules" class="nav-link">Modules</a>
+                <a href="#download" class="nav-link nav-link-cta">Download Free</a>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ═══════ HERO SECTION ═══════ -->
+    <section id="hero">
+        <div class="hero-glow hero-glow-1"></div>
+        <div class="hero-glow hero-glow-2"></div>
+        <div class="hero-content">
+            <div class="hero-badge" data-animate="fade-up">
+                <span class="badge-dot"></span>
+                Open Source Security Tool
+            </div>
+            <h1 data-animate="fade-up" data-delay="100">
+                Your Keystrokes.<br>
+                <span class="gradient-text">Your Clipboard.</span><br>
+                Your Control.
+            </h1>
+            <p class="hero-subtitle" data-animate="fade-up" data-delay="200">
+                CipherGuard is a real-time desktop security suite that scrambles keystrokes 
+                from keyloggers, guards your clipboard from hijacking, and locks sensitive 
+                data in an AES-256 encrypted vault.
+            </p>
+            <div class="hero-actions" data-animate="fade-up" data-delay="300">
+                <a href="#download" class="btn btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Download for Windows
+                </a>
+                <a href="#features" class="btn btn-ghost">
+                    Explore Features
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </div>
+            <div class="hero-stats" data-animate="fade-up" data-delay="400">
+                <div class="stat">
+                    <span class="stat-number" data-count="3">0</span>
+                    <span class="stat-label">Protection Modules</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number">AES-256</span>
+                    <span class="stat-label">Encryption Standard</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Free & Open Source</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Terminal Animation -->
+        <div class="hero-terminal" data-animate="fade-up" data-delay="500">
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <span class="dot dot-red"></span>
+                    <span class="dot dot-yellow"></span>
+                    <span class="dot dot-green"></span>
+                </div>
+                <span class="terminal-title">keylogger_output.txt</span>
+            </div>
+            <div class="terminal-body">
+                <div class="terminal-line" id="termLine1">
+                    <span class="terminal-prompt">attacker $</span>
+                    <span class="terminal-text typing" id="termText1"></span>
+                </div>
+                <div class="terminal-line hidden" id="termLine2">
+                    <span class="terminal-comment">// Without CipherGuard:</span>
+                </div>
+                <div class="terminal-line hidden" id="termLine3">
+                    <span class="terminal-danger">CAPTURED: MyP@ssword123!</span>
+                </div>
+                <div class="terminal-line hidden" id="termLine4">
+                    <span class="terminal-comment">// With CipherGuard KeyShield ON:</span>
+                </div>
+                <div class="terminal-line hidden" id="termLine5">
+                    <span class="terminal-success">CAPTURED: x#9Qm!kW2&amp;zR$v</span>
+                </div>
+                <div class="terminal-line hidden" id="termLine6">
+                    <span class="terminal-success blink">█ ATTACKER FAILED — Data is useless</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ FEATURES SECTION ═══════ -->
+    <section id="features">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag">Why CipherGuard?</span>
+                <h2>Protection That Works <span class="gradient-text">Silently</span></h2>
+                <p class="section-desc">Three powerful modules working in harmony to keep your sensitive data safe from modern threats.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card" data-animate="fade-up" data-delay="0">
+                    <div class="feature-icon feature-icon-blue">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M8 16h8"/></svg>
+                    </div>
+                    <h3>Real-Time Keystroke Scrambling</h3>
+                    <p>KeyShield intercepts every keystroke and feeds keyloggers scrambled garbage — your real input reaches apps untouched.</p>
+                </div>
+
+                <div class="feature-card" data-animate="fade-up" data-delay="100">
+                    <div class="feature-icon feature-icon-purple">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    </div>
+                    <h3>Clipboard Hijack Detection</h3>
+                    <p>ClipGuard monitors your clipboard 24/7, instantly alerting you if malware swaps your copied crypto address or password.</p>
+                </div>
+
+                <div class="feature-card" data-animate="fade-up" data-delay="200">
+                    <div class="feature-icon feature-icon-green">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    </div>
+                    <h3>AES-256 Encrypted Vault</h3>
+                    <p>Store clipboard history, passwords, and sensitive text in a military-grade encrypted vault protected by your master password.</p>
+                </div>
+
+                <div class="feature-card" data-animate="fade-up" data-delay="0">
+                    <div class="feature-icon feature-icon-orange">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    </div>
+                    <h3>PDF Forensic Reports</h3>
+                    <p>Generate detailed threat reports documenting all detected attacks, blocked hijacks, and system events for auditing.</p>
+                </div>
+
+                <div class="feature-card" data-animate="fade-up" data-delay="100">
+                    <div class="feature-icon feature-icon-cyan">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <h3>Multiple Scramble Algorithms</h3>
+                    <p>Choose from random mapping, Caesar shift, and more — each session generates a unique scramble key that attackers can't reverse.</p>
+                </div>
+
+                <div class="feature-card" data-animate="fade-up" data-delay="200">
+                    <div class="feature-icon feature-icon-pink">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    </div>
+                    <h3>System Tray Integration</h3>
+                    <p>Runs silently in the background with instant notifications. Toggle protection on/off without opening the full dashboard.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ HOW IT WORKS ═══════ -->
+    <section id="how-it-works">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag">Simple & Effective</span>
+                <h2>How <span class="gradient-text">CipherGuard</span> Protects You</h2>
+                <p class="section-desc">Three simple steps to total input protection.</p>
+            </div>
+
+            <div class="steps-container">
+                <div class="step" data-animate="fade-up" data-delay="0">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <h3>Launch & Set Master Password</h3>
+                        <p>Start CipherGuard and set your master password. This key encrypts your vault with AES-256 — even we can't read your data.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="step-icon-box">🔐</div>
+                    </div>
+                </div>
+
+                <div class="step-connector">
+                    <div class="connector-line"></div>
+                    <div class="connector-dot"></div>
+                </div>
+
+                <div class="step" data-animate="fade-up" data-delay="150">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <h3>Enable KeyShield & ClipGuard</h3>
+                        <p>Toggle on KeyShield to scramble keystrokes and ClipGuard to monitor your clipboard. Both run silently in the system tray.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="step-icon-box">⚡</div>
+                    </div>
+                </div>
+
+                <div class="step-connector">
+                    <div class="connector-line"></div>
+                    <div class="connector-dot"></div>
+                </div>
+
+                <div class="step" data-animate="fade-up" data-delay="300">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <h3>Work Safely — We Handle the Rest</h3>
+                        <p>Type passwords, copy addresses, paste secrets — CipherGuard intercepts threats in real-time and alerts you instantly.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="step-icon-box">🛡️</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ MODULES DEEP DIVE ═══════ -->
+    <section id="modules">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag">Under the Hood</span>
+                <h2>Three Modules, <span class="gradient-text">Total Protection</span></h2>
+            </div>
+
+            <!-- Module 1: KeyShield -->
+            <div class="module-card" data-animate="fade-up">
+                <div class="module-header">
+                    <div class="module-icon module-icon-blue">⌨️</div>
+                    <div>
+                        <h3>KeyShield Engine</h3>
+                        <span class="module-tag tag-blue">Anti-Keylogger</span>
+                    </div>
+                </div>
+                <div class="module-body">
+                    <div class="module-info">
+                        <p>KeyShield sits between your keyboard and the operating system. When a keylogger tries to capture your keystrokes, it receives randomly scrambled characters instead of your actual input.</p>
+                        <ul class="module-list">
+                            <li>Real-time keystroke interception & scrambling</li>
+                            <li>Multiple algorithms: Random Map, Caesar Shift, Unicode Shuffle</li>
+                            <li>Per-session unique encryption keys</li>
+                            <li>Zero impact on your actual typing</li>
+                        </ul>
+                    </div>
+                    <div class="module-demo">
+                        <div class="demo-comparison">
+                            <div class="demo-box demo-box-danger">
+                                <div class="demo-label">❌ What Keylogger Captures</div>
+                                <div class="demo-text" id="scrambledDemo">x#9Qm!kW2&zR$v</div>
+                            </div>
+                            <div class="demo-box demo-box-success">
+                                <div class="demo-label">✅ What You Actually Typed</div>
+                                <div class="demo-text">MyP@ssword123!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 2: ClipGuard -->
+            <div class="module-card" data-animate="fade-up">
+                <div class="module-header">
+                    <div class="module-icon module-icon-purple">📋</div>
+                    <div>
+                        <h3>ClipGuard Engine</h3>
+                        <span class="module-tag tag-purple">Clipboard Protection</span>
+                    </div>
+                </div>
+                <div class="module-body">
+                    <div class="module-info">
+                        <p>Clipboard hijacking malware silently replaces your copied content — like swapping a Bitcoin address with the attacker's. ClipGuard catches this instantly.</p>
+                        <ul class="module-list">
+                            <li>Continuous clipboard monitoring</li>
+                            <li>Instant hijack alerts with attacker process info</li>
+                            <li>Automatic content restoration</li>
+                            <li>Full threat logging for forensic reports</li>
+                        </ul>
+                    </div>
+                    <div class="module-demo">
+                        <div class="alert-preview">
+                            <div class="alert-header-preview">
+                                <span class="alert-icon-preview">⚠️</span>
+                                CLIPBOARD HIJACK DETECTED
+                            </div>
+                            <div class="alert-body-preview">
+                                <div class="alert-row">
+                                    <span class="alert-key">Original:</span>
+                                    <span class="alert-val alert-val-good">1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</span>
+                                </div>
+                                <div class="alert-row">
+                                    <span class="alert-key">Replaced:</span>
+                                    <span class="alert-val alert-val-bad">3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy</span>
+                                </div>
+                                <div class="alert-row">
+                                    <span class="alert-key">Attacker:</span>
+                                    <span class="alert-val alert-val-bad">malware_stealer.exe (PID: 6612)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 3: Vault -->
+            <div class="module-card" data-animate="fade-up">
+                <div class="module-header">
+                    <div class="module-icon module-icon-green">🔒</div>
+                    <div>
+                        <h3>Encrypted Vault</h3>
+                        <span class="module-tag tag-green">AES-256 Storage</span>
+                    </div>
+                </div>
+                <div class="module-body">
+                    <div class="module-info">
+                        <p>The Vault securely stores your clipboard history, passwords, and sensitive notes using AES-256 encryption, derived from your master password via PBKDF2.</p>
+                        <ul class="module-list">
+                            <li>AES-256-CBC encryption with PBKDF2 key derivation</li>
+                            <li>Automatic clipboard history capture</li>
+                            <li>One-click paste from vault to clipboard</li>
+                            <li>Manual entry add/delete support</li>
+                        </ul>
+                    </div>
+                    <div class="module-demo">
+                        <div class="vault-preview">
+                            <div class="vault-header-preview">
+                                <span>🔒 Encrypted Vault</span>
+                                <span class="vault-count">4 entries</span>
+                            </div>
+                            <div class="vault-entry-preview">
+                                <span class="vault-entry-icon">🔑</span>
+                                <span class="vault-entry-text">••••••••••••</span>
+                                <span class="vault-entry-date">Just now</span>
+                            </div>
+                            <div class="vault-entry-preview">
+                                <span class="vault-entry-icon">📋</span>
+                                <span class="vault-entry-text">••••••••••••</span>
+                                <span class="vault-entry-date">2 min ago</span>
+                            </div>
+                            <div class="vault-entry-preview">
+                                <span class="vault-entry-icon">🔑</span>
+                                <span class="vault-entry-text">••••••••••••</span>
+                                <span class="vault-entry-date">5 min ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ DOWNLOAD SECTION ═══════ -->
+    <section id="download">
+        <div class="container">
+            <div class="download-card" data-animate="fade-up">
+                <div class="download-glow"></div>
+                <div class="section-header">
+                    <span class="section-tag">Get Started</span>
+                    <h2>Download <span class="gradient-text">CipherGuard</span></h2>
+                    <p class="section-desc">Free, open-source, and ready to protect your system.</p>
+                </div>
+
+                <div class="download-options">
+                    <div class="download-main">
+                        <a href="#" class="btn btn-primary btn-lg" id="downloadBtn">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Download for Windows
+                        </a>
+                        <span class="download-version">v1.0.0 · Windows 10/11 · ~15 MB</span>
+                    </div>
+                </div>
+
+                <div class="requirements">
+                    <h4>System Requirements</h4>
+                    <div class="req-grid">
+                        <div class="req-item">
+                            <span class="req-icon">💻</span>
+                            <div>
+                                <strong>OS</strong>
+                                <span>Windows 10 / 11</span>
+                            </div>
+                        </div>
+                        <div class="req-item">
+                            <span class="req-icon">🐍</span>
+                            <div>
+                                <strong>Python</strong>
+                                <span>3.8 or higher</span>
+                            </div>
+                        </div>
+                        <div class="req-item">
+                            <span class="req-icon">📦</span>
+                            <div>
+                                <strong>Dependencies</strong>
+                                <span>PyQt5, pynput, cryptography</span>
+                            </div>
+                        </div>
+                        <div class="req-item">
+                            <span class="req-icon">💾</span>
+                            <div>
+                                <strong>Disk Space</strong>
+                                <span>~50 MB (with dependencies)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-steps">
+                    <h4>Quick Installation</h4>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>Terminal</span>
+                            <button class="copy-btn" onclick="copyInstallCmd()">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                Copy
+                            </button>
+                        </div>
+                        <pre><code><span class="code-comment"># 1. Clone or extract the project</span>
+<span class="code-prompt">$</span> git clone https://github.com/DHANANJAYA0/CipherGuard.git
+<span class="code-prompt">$</span> cd CipherGuard
+
+<span class="code-comment"># 2. Install dependencies</span>
+<span class="code-prompt">$</span> pip install -r requirements.txt
+
+<span class="code-comment"># 3. Run CipherGuard</span>
+<span class="code-prompt">$</span> python main.py</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ FOOTER ═══════ -->
+    <footer id="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="nav-logo">
+                        <span class="logo-icon">🛡️</span>
+                        <span class="logo-text">Cipher<span class="logo-highlight">Guard</span></span>
+                    </div>
+                    <p class="footer-desc">Open-source desktop security suite protecting your keystrokes, clipboard, and sensitive data from modern threats.</p>
+                </div>
+                <div class="footer-links-group">
+                    <h5>Product</h5>
+                    <a href="#features">Features</a>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#modules">Modules</a>
+                    <a href="#download">Download</a>
+                </div>
+                <div class="footer-links-group">
+                    <h5>Modules</h5>
+                    <a href="#modules">KeyShield</a>
+                    <a href="#modules">ClipGuard</a>
+                    <a href="#modules">Vault</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 CipherGuard. Free &amp; open-source software.</p>
+                <p>Built with ❤️ for cybersecurity.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>

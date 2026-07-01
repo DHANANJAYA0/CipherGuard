@@ -1,0 +1,6 @@
+pynput==1.7.7
+pywin32==306
+PyQt5==5.15.11
+cryptography==44.0.0
+pyqtgraph==0.13.7
+reportlab==4.2.5
