@@ -5,6 +5,7 @@ Initializes all modules, connects them to the UI, and launches the application.
 
 import sys
 import os
+import winsound
 
 # Add project root to Python path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -76,6 +77,11 @@ class CipherGuardApp:
         self.vault_timer.timeout.connect(self._refresh_vault)
         self.vault_timer.start(10000)  # Refresh every 10 seconds
 
+        # ─── Chart refresh timer ─────────────────────────
+        self.chart_timer = QTimer()
+        self.chart_timer.timeout.connect(self._refresh_chart)
+        self.chart_timer.start(60000)  # Refresh every 60 seconds
+
         logger.info(f"{APP_NAME} initialized successfully")
 
         # Start KeyShield in monitor-only mode immediately (listener always running).
@@ -105,6 +111,7 @@ class CipherGuardApp:
         self.window.on_generate_report = self._generate_report
         self.window.on_clear_buffers = self._clear_keyshield_buffers
         self.window.on_protected_input = self._on_protected_input
+        self.window.on_save_to_vault = self._save_generated_password
 
         # DIRECT signal connection — bypasses the callback chain entirely.
         # This fires for BOTH typing and Ctrl+V paste in the Protected Input field.
@@ -327,6 +334,12 @@ class CipherGuardApp:
             f"Attacker: {event.attacker_process}"
         )
 
+        # Play alert sound (non-blocking)
+        try:
+            winsound.PlaySound("SystemExclamation", winsound.SND_ALIAS | winsound.SND_ASYNC)
+        except Exception:
+            pass  # Silently ignore if sound playback fails
+
     def _on_clipboard_copy(self, content: str):
         """Handle user clipboard copy (store in vault)."""
         from models.schemas import ClipGuardEvent
@@ -398,6 +411,23 @@ class CipherGuardApp:
         entries = self.vault.get_entries()
         self.window.update_vault_table(entries)
 
+    def _save_generated_password(self, password: str):
+        """Save a generated password to the vault (from Password Generator tab)."""
+        try:
+            self.vault.add_entry(f"[Generated] {password}")
+            self._refresh_vault()
+            logger.info("Generated password saved to vault")
+        except Exception as e:
+            logger.error(f"Failed to save generated password: {e}")
+
+    def _refresh_chart(self):
+        """Refresh the threat timeline chart with latest data."""
+        try:
+            data = self.db.get_events_by_hour(24)
+            self.window.chart_update_signal.emit(data)
+        except Exception as e:
+            logger.error(f"Chart refresh failed: {e}")
+
     # ─── Report Generation ───────────────────────────────
 
     def _generate_report(self):
@@ -439,6 +469,7 @@ class CipherGuardApp:
         self.clipguard.stop()
         self.vault.stop()
         self.vault_timer.stop()
+        self.chart_timer.stop()
         self.buffer_timer.stop()
         self.app.quit()
 
@@ -457,6 +488,10 @@ class CipherGuardApp:
         })
 
         logger.info(f"{APP_NAME} is running!")
+
+        # Initial chart refresh
+        self._refresh_chart()
+
         return self.app.exec_()
 
 
