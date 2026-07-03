@@ -39,6 +39,7 @@
                 <a href="#features" class="nav-link">Features</a>
                 <a href="#how-it-works" class="nav-link">How It Works</a>
                 <a href="#modules" class="nav-link">Modules</a>
+                <a href="#live-demo" class="nav-link">Live Demo</a>
                 <a href="#download" class="nav-link nav-link-cta">Download Free</a>
             </div>
             <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
@@ -372,6 +373,88 @@
                                 <span class="vault-entry-date">5 min ago</span>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ INTERACTIVE DEMO SECTION ═══════ -->
+    <section id="live-demo">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag">Try It Yourself</span>
+                <h2>See CipherGuard <span class="gradient-text">In Action</span></h2>
+                <p class="section-desc">Experience how KeyShield and ClipGuard protect you — right here in your browser.</p>
+            </div>
+
+            <!-- ─── Demo 1: KeyShield Typing Simulator ─── -->
+            <div class="demo-section" data-animate="fade-up">
+                <div class="demo-section-header">
+                    <div class="demo-section-icon demo-icon-blue">⌨️</div>
+                    <div>
+                        <h3>KeyShield Simulator</h3>
+                        <p class="demo-section-subtitle">Type anything below — watch how keyloggers only capture scrambled garbage.</p>
+                    </div>
+                </div>
+
+                <div class="demo-interactive-panel">
+                    <div class="demo-input-side">
+                        <label class="demo-panel-label demo-label-safe">✅ What You Type (Protected)</label>
+                        <input type="text" id="demoKeyshieldInput" class="demo-input-field" 
+                               placeholder="Try typing a password like MyP@ssword123!" 
+                               autocomplete="off" spellcheck="false">
+                        <span class="demo-hint">Your real input is safe — only you see it</span>
+                    </div>
+                    <div class="demo-arrow-divider">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </div>
+                    <div class="demo-output-side">
+                        <label class="demo-panel-label demo-label-danger">❌ What Keylogger Captures</label>
+                        <div class="demo-output-field" id="demoKeyshieldOutput">
+                            <span class="demo-output-placeholder">Scrambled output appears here...</span>
+                        </div>
+                        <span class="demo-hint demo-hint-danger">Attacker sees useless garbage</span>
+                    </div>
+                </div>
+
+                <div class="demo-algo-selector">
+                    <span class="demo-algo-label">Scramble Algorithm:</span>
+                    <button class="demo-algo-btn active" data-algo="random">🔀 Random Map</button>
+                    <button class="demo-algo-btn" data-algo="caesar">🔄 Caesar Shift</button>
+                    <button class="demo-algo-btn" data-algo="leet">💀 Leet Speak</button>
+                </div>
+            </div>
+
+            <!-- ─── Demo 2: ClipGuard Hijack Simulation ─── -->
+            <div class="demo-section" data-animate="fade-up" data-delay="150">
+                <div class="demo-section-header">
+                    <div class="demo-section-icon demo-icon-purple">📋</div>
+                    <div>
+                        <h3>ClipGuard Hijack Detection</h3>
+                        <p class="demo-section-subtitle">Watch how CipherGuard catches clipboard hijacking attacks in real-time.</p>
+                    </div>
+                </div>
+
+                <div class="demo-clipguard-panel">
+                    <div class="demo-clip-address">
+                        <span class="demo-clip-label">Bitcoin Address to Copy:</span>
+                        <code class="demo-clip-code">1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</code>
+                    </div>
+
+                    <button class="btn btn-primary demo-clip-btn" id="demoClipBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                        Click to Simulate Copy
+                    </button>
+
+                    <div class="demo-clip-timeline" id="demoClipTimeline">
+                        <!-- Steps appear here dynamically -->
                     </div>
                 </div>
             </div>

@@ -453,6 +453,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Download button
     setupDownloadButton();
 
+    // Initialize Interactive Demos
+    new KeyShieldDemo();
+    new ClipGuardDemo();
+
     // Add spin animation for download button
     const style = document.createElement('style');
     style.textContent = `
@@ -464,3 +468,153 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.head.appendChild(style);
 });
+
+// ─── KeyShield Simulator ────────────────────
+class KeyShieldDemo {
+    constructor() {
+        this.input = document.getElementById('demoKeyshieldInput');
+        this.output = document.getElementById('demoKeyshieldOutput');
+        this.algoBtns = document.querySelectorAll('.demo-algo-btn');
+        this.currentAlgo = 'random';
+
+        if (!this.input || !this.output) return;
+
+        this.scrambleMap = {};
+        this.asciiChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{}|;:\',.<>?/`~ ';
+        this.generateRandomMap();
+
+        this.input.addEventListener('input', () => this.updateOutput());
+        this.algoBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.algoBtns.forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                this.currentAlgo = e.target.dataset.algo;
+                this.updateOutput();
+            });
+        });
+    }
+
+    generateRandomMap() {
+        const shuffled = this.asciiChars.split('').sort(() => Math.random() - 0.5);
+        for (let i = 0; i < this.asciiChars.length; i++) {
+            this.scrambleMap[this.asciiChars[i]] = shuffled[i];
+        }
+    }
+
+    scramble(char) {
+        if (this.currentAlgo === 'caesar') {
+            const idx = this.asciiChars.indexOf(char);
+            if (idx === -1) return char;
+            return this.asciiChars[(idx + 13) % this.asciiChars.length];
+        } else if (this.currentAlgo === 'leet') {
+            const leet = {
+                'a':'4', 'A':'4', 'e':'3', 'E':'3', 'i':'1', 'I':'1', 'o':'0', 'O':'0', 
+                's':'5', 'S':'5', 't':'7', 'T':'7', 'g':'9', 'G':'9', 'b':'8', 'B':'8'
+            };
+            return leet[char] || char;
+        } else { // random
+            return this.scrambleMap[char] || char;
+        }
+    }
+
+    updateOutput() {
+        const text = this.input.value;
+        if (!text) {
+            this.output.innerHTML = '<span class="demo-output-placeholder">Scrambled output appears here...</span>';
+            return;
+        }
+
+        const scrambledText = text.split('').map(c => this.scramble(c)).join('');
+        this.output.textContent = scrambledText;
+    }
+}
+
+// ─── ClipGuard Simulator ───────────────────
+class ClipGuardDemo {
+    constructor() {
+        this.btn = document.getElementById('demoClipBtn');
+        this.timeline = document.getElementById('demoClipTimeline');
+        this.originalAddress = '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa';
+        this.hijackedAddress = '3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy';
+        this.isAnimating = false;
+
+        if (!this.btn || !this.timeline) return;
+
+        this.btn.addEventListener('click', () => this.runSimulation());
+    }
+
+    async runSimulation() {
+        if (this.isAnimating) return;
+        this.isAnimating = true;
+        this.btn.disabled = true;
+        this.timeline.innerHTML = '';
+
+        // Step 1: Copy
+        this.addStep('step-copy', '📋 Copied to Clipboard', `Address: <code>${this.originalAddress}</code>`, 'ℹ️ User initiated copy event.');
+        await this.wait(1500);
+
+        // Step 2: Hijack Attempt
+        this.addStep('step-hijack', '👾 Malware Hijack Attempt', `Malware (stealer.exe) tried to swap it with: <code>${this.hijackedAddress}</code>`, '⚠️ Clipboard change detected from untrusted background process.');
+        this.playBeep(440, 200);
+        await this.wait(2000);
+
+        // Step 3: Alert
+        this.addStep('step-alert', '🚨 CipherGuard Alert Triggered', 'Windows System Alert played. Process <strong>stealer.exe</strong> (PID: 6612) flagged.', 'Sound Notification: SystemExclamation.wav played.');
+        this.playBeep(880, 400);
+        await this.wait(1800);
+
+        // Step 4: Restore
+        this.addStep('step-restore', '🛡️ Integrity Restored', `Address reverted back to: <code>${this.originalAddress}</code>`, '✅ Attacker process blocked and clipboard content restored safely.');
+        
+        this.isAnimating = false;
+        this.btn.disabled = false;
+    }
+
+    addStep(className, title, desc, sub) {
+        const step = document.createElement('div');
+        step.className = `timeline-step ${className}`;
+        
+        let icon = 'ℹ️';
+        if (className === 'step-copy') icon = '📋';
+        if (className === 'step-hijack') icon = '👾';
+        if (className === 'step-alert') icon = '🚨';
+        if (className === 'step-restore') icon = '🛡️';
+
+        step.innerHTML = `
+            <div class="timeline-step-icon">${icon}</div>
+            <div class="timeline-step-content">
+                <span class="timeline-step-title">${title}</span>
+                <span class="timeline-step-desc">${desc}</span>
+                <span class="demo-hint">${sub}</span>
+            </div>
+        `;
+        this.timeline.appendChild(step);
+    }
+
+    wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    playBeep(freq, duration) {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+            
+            gain.gain.setValueAtTime(0.05, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + duration / 1000);
+            
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            
+            osc.start();
+            osc.stop(ctx.currentTime + duration / 1000);
+        } catch (e) {
+            // Audio context failed / not permitted
+        }
+    }
+}
+
